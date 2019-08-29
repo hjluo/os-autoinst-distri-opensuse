@@ -487,7 +487,8 @@ sub zypper_call {
     my $allow_exit_codes = $args{exitcode} || [0];
     my $timeout          = $args{timeout} || 700;
     my $log              = $args{log};
-    my $dumb_term        = $args{dumb_term} // is_serial_terminal;
+    #my $dumb_term        = $args{dumb_term} // is_serial_terminal;
+    my $dumb_term        = $args{dumb_term};
 
     my $printer = $log ? "| tee /tmp/$log" : $dumb_term ? '| cat' : '';
     die 'Exit code is from PIPESTATUS[0], not grep' if $command =~ /^((?!`).)*\| ?grep/;
@@ -495,7 +496,7 @@ sub zypper_call {
     # Retrying workarounds
     my $ret;
     for (1 .. 5) {
-        $ret = script_run("zypper -n $command $printer; ( exit \${PIPESTATUS[0]} )", $timeout);
+        $ret = script_run("zypper -n $command $printer", $timeout);
         die "zypper did not finish in $timeout seconds" unless defined($ret);
         if ($ret == 4) {
             if (script_run('grep "Error code.*502" /var/log/zypper.log') == 0) {
@@ -1519,7 +1520,8 @@ sub create_btrfs_subvolume {
     assert_script_run("mv /boot/grub2/arm64-efi /boot/grub2/arm64-efi.bk");
     assert_script_run("btrfs subvolume create /boot/grub2/arm64-efi");
     assert_script_run("cp -r /boot/grub2/arm64-efi.bk/* /boot/grub2/arm64-efi/");
-    assert_script_run("rm -fr /boot/grub2/arm64-efi.bk");
+    assert_script_run("sync; sleep 5; sync; sync");
+    #assert_script_run("rm -fr /boot/grub2/arm64-efi.bk");
 }
 
 
