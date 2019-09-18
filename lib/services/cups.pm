@@ -38,8 +38,20 @@ sub start_service {
 
 # check service is running and enabled
 sub check_service {
+    my ($stage) = @_;
+    $stage //= '';
+
     systemctl 'is-enabled cups.service';
-    systemctl 'is-active cups';
+
+    if (check_var('ARCH', 's390x')
+      && check_var('HDDVERSION', '12-SP3')
+      && check_var('VERSIOM', '15-SP1')
+      && $stage ne 'before') {
+        record_soft_failure "bsc#1136146, cups can't be active after migration";
+    }
+    else {
+        systemctl 'is-active cups';
+    }
 }
 
 # check cups function
@@ -98,9 +110,9 @@ sub full_cups_check {
         enable_service();
         start_service();
     }
-    check_service();
+    check_service($stage);
     check_function();
-    check_service();
+    check_service($stage);
 }
 
 1;

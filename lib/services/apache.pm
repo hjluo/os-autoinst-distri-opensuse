@@ -32,7 +32,18 @@ sub start_service {
 
 # check service is running and enabled
 sub check_service {
-    systemctl 'is-enabled apache2.service';
+    my ($stage) = @_;
+    $stage //= '';
+
+    if (check_var('ARCH', 'ppc64le')
+        && check_var('HDDVERSION','12-SP4')
+        && check_var('VERSION','12-SP5')
+        && $stage ne 'before') {
+        record_soft_failure "bsc#1150064, apache2 was not enabled after migraton on ppc64le";
+    }
+    else {
+        systemctl 'is-enabled apache2.service';
+    }
     systemctl 'is-active apache2';
 }
 
