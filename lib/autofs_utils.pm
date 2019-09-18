@@ -50,7 +50,18 @@ sub start_service {
 }
 
 sub check_service {
-    systemctl 'is-enabled autofs.service';
+    my ($stage) = @_;
+    $stage //= '';
+
+    if ( check_var('ARCH', 'ppc64le')
+      && check_var('HDDVERSION', '12-SP5')
+      && check_var('UPGRADE_TARGET_VERSION', '15-SP1')
+      && $stage ne 'before') {
+        record_soft_failure("bsc#1149938, autofs disabled after migration on ppc64le");
+    }
+    else {
+        systemctl 'is-enabled autofs.service';
+    }
     systemctl 'is-active autofs';
 }
 
@@ -111,7 +122,7 @@ sub full_autofs_check {
         enable_service();
         start_service();
         configure_service();
-        check_service();
+        check_service('before');
         check_function();
     }
     else {
