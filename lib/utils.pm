@@ -1519,7 +1519,7 @@ sub create_btrfs_subvolume {
     assert_script_run("mv /boot/grub2/arm64-efi /boot/grub2/arm64-efi.bk");
     assert_script_run("btrfs subvolume create /boot/grub2/arm64-efi");
     assert_script_run("cp -r /boot/grub2/arm64-efi.bk/* /boot/grub2/arm64-efi/");
-    assert_script_run("rm -fr /boot/grub2/arm64-efi.bk");
+    assert_script_run("rm -fr /boot/grub2/arm64-efi.bk") unless (get_var('START_AFTER_TEST'));
 }
 
 
