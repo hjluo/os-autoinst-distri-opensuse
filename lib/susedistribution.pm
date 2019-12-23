@@ -717,7 +717,11 @@ sub activate_console {
             # case the system is still booting (https://bugzilla.novell.com/show_bug.cgi?id=895602)
             # or when using remote consoles which can take some seconds, e.g.
             # just after ssh login
-            assert_screen \@tags, 60;
+            while (!check_screen \@tags, 60) {
+                diag "switch to tty_$nr failed, try again.";
+                $self->hyperv_console_switch($console, $nr);
+            }
+
             if (match_has_tag("tty$nr-selected")) {
                 type_string "$user\n";
                 handle_password_prompt;
