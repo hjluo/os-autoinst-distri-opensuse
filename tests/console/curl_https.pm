@@ -1,7 +1,7 @@
 # SUSE's openQA tests
 #
 # Copyright © 2009-2013 Bernhard M. Wiedemann
-# Copyright © 2012-2019 SUSE LLC
+# Copyright © 2012-2020 SUSE LLC
 #
 # Copying and distribution of this file, with or without modification,
 # are permitted in any medium without royalty provided the copyright
@@ -27,7 +27,7 @@ sub run {
     my $max_retries = 7;
     for (1 .. $max_retries) {
         eval {
-            validate_script_output('curl -f -v https://httpbin.org/get 2>&1', sub { m,subjectAltName:[\w\s]+["]?httpbin.org["]? matched, });
+            validate_script_output('curl -f -v https://httpbin.org/get 2>&1', sub { m,subjectAltName:.*httpbin.org.*matched, });
         };
         last unless ($@);
         diag "curl -f -v https://eu.httpbin.org/get failed: $@";
