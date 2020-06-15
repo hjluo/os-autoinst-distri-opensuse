@@ -42,9 +42,11 @@ sub run {
     # We add 'zypper ref' here to download and preparse the metadata of packages,
     # which will make the follow 'zypper lifecycle' runs faster.
     select_console 'root-console';
-    script_run('zypper ref');
+    diag "zypper refresh force build .....START";
+    script_run('zypper refresh -b');
+    diag "zypper refresh force ..... DONE";
     select_console 'user-console';
-    my $overview = script_output('zypper lifecycle', 600);
+    my $overview = script_output('zypper lifecycle', 600, proceed_on_failure => 1);
     die "Missing header line:\nOutput: '$overview'" unless $overview =~ /Product end of support/;
     die "Missing link to lifecycle page:\nOutput: '$overview'"
       if $overview =~ /n\/a/ && $overview !~ qr{\*\) See https://www.suse.com/lifecycle for latest information};
