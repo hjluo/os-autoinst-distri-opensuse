@@ -928,10 +928,25 @@ sub wait_boot_past_bootloader {
     # the screenlock screenshot.
     my $timeout        = $ready_time;
     my $check_interval = 30;
+    push(@tags, 'blackscreen');
     while ($timeout > $check_interval) {
         my $ret = check_screen \@tags, $check_interval;
-        last if $ret;
+        if (match_has_tag('blackscreen')) {
+            # trigger screen to live
+            send_key 'ret';
+        } else {
+            last if $ret;
+        }
         $timeout -= $check_interval;
+    }
+    $timeout = 3600;
+    my $times = 1;
+    while ($timeout > $check_interval) {
+        diag "$times, >>======MMMMMMMMMMMMM=====";
+        save_screenshot;
+        diag "====NNNNNNNNNNNNN=====";
+        $timeout -= $check_interval;
+        $times = $times + 1; 
     }
     # if we reached a logged in desktop we are done here
     return 1 if match_has_tag('generic-desktop') || match_has_tag('opensuse-welcome');
