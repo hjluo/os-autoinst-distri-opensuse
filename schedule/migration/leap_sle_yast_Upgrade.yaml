@@ -1,0 +1,13 @@
+name:           leap_sle_Upgrade.yaml
+description:    >
+    This is for leap 15.2 to sle15 upgrade migration with yast2
+schedule:
+  - boot/boot_to_desktop
+  - console/system_prepare
+  - installation/scc_registration
+  - migration/version_switch_upgrade_target
+  - migration/online_migration/pre_migration
+  - migration/online_migration/yast2_migration
+  - migration/online_migration/post_migration
+  - boot/grub_test_snapshot
+  - boot/snapper_rollback
