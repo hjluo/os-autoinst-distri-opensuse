@@ -49,6 +49,7 @@ our $hdd_base_version;
 our $support_ver_def  = '12+';
 our $support_ver_12   = '=12';
 our $support_ver_ge15 = '15+';
+our $support_ver_ge11 = '11+';
 
 our %srv_check_results = (
     before_migration => 'PASS',
@@ -133,8 +134,9 @@ our $default_services = {
     cups => {
         srv_pkg_name       => 'cups',
         srv_proc_name      => 'cups',
-        support_ver        => $support_ver_def,
-        service_check_func => \&services::cups::full_cups_check
+        support_ver        => $support_ver_ge11,
+        base_service       => 'SystemV' 
+        #service_check_func => \&services::cups::full_cups_check
     },
     radvd => {
         srv_pkg_name  => 'radvd',
@@ -163,6 +165,11 @@ our $default_services = {
         support_ver        => $support_ver_def,
         service_check_func => \&full_kdump_check
     },
+        ldap => {
+        srv_pkg_name       => 'ldap',
+        srv_proc_name      => 'ldap',
+        support_ver        => $support_ver_def
+   },
 };
 
 =head2 check_services
@@ -215,6 +222,10 @@ sub install_services {
         my $srv_pkg_name  = $service->{$s}->{srv_pkg_name};
         my $srv_proc_name = $service->{$s}->{srv_proc_name};
         my $support_ver   = $service->{$s}->{support_ver};
+        # my $service_type = 'Systemd;
+        #if (exists $service->{$s}->{base_service}) {
+        #    my $service_type = $service->{$s}->{base_service};
+        #}
         next unless _is_applicable($srv_pkg_name);
         record_info($srv_pkg_name, "service check before migration");
         eval {
