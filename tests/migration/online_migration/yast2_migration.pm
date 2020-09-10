@@ -208,7 +208,10 @@ sub run {
     assert_screen 'yast2-migration-target-list-selected', 60;
     send_key_until_needlematch 'migration-target-' . get_var("VERSION"), 'down', 20, 3;
     send_key "alt-n";
-    assert_screen ['yast2-migration-installupdate', 'yast2-migration-proposal'], 500;
+    assert_screen ['yast2-migration-installupdate', 'yast2-migration-proposal', 'import-untrusted-gpg-key'], 500;
+    if (match_has_tag('import-untrusted-gpg-key')) {
+        send_key 'alt-t';
+    }
     if (match_has_tag 'yast2-migration-installupdate') {
         send_key 'alt-y';
     }
