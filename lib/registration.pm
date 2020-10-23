@@ -726,6 +726,20 @@ sub yast_scc_registration {
     my (%args) = @_;
     # For leap to sle migration, we need to install yast2-registration and rollback-helper
     # and start/enable rollback.service before running yast2 registration module.
+    diag "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM";
+    script_run 'zypper lr -d';
+    script_run 'zypper rr -a';
+    script_run 'zypper ref -f ';
+    script_run 'zypper lr -d';
+    script_run 'zypper ar http://download.opensuse.org/distribution/leap/15.3/repo/non-oss openSUSE-Leap-15.3-NonOss-Pool';
+    script_run 'zypper ar http://download.opensuse.org/repositories/openSUSE:/Leap:/15.3:/NonFree:/Update/standard openSUSE-Leap-15.3-NonOss-Updates';
+    script_run 'zypper ar http://download.opensuse.org/distribution/leap/15.3/repo/oss openSUSE-Leap-15.3-Pool';
+    script_run 'zypper ar http://download.opensuse.org/repositories/openSUSE:/Leap:/15.3:/Update/standard openSUSE-Leap-15.3-Updates'; 
+    diag "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM";
+    script_run 'zypper ref -f ';
+    script_run 'zypper lr -d';
+    diag "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM";
+
     my $client_module = 'scc';
     if (is_leap_migration) {
         zypper_call('in yast2-registration rollback-helper');

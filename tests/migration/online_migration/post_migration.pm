@@ -38,6 +38,9 @@ sub run {
     }
     diag "SUSEConnect --status-text: $out";
     assert_script_run "SUSEConnect --status-text | grep -v 'Not Registered'" unless get_var('MEDIA_UPGRADE');
+    diag '======================================================';
+    assert_script_run("cat /etc/os-release");
+    diag '======================================================';
 
     add_maintenance_repos() if (get_var('MAINT_TEST_REPO'));
 

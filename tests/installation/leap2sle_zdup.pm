@@ -28,6 +28,19 @@ sub run {
     $self->wait_boot(textmode => !is_desktop_installed(), bootloader_time => 300, ready_time => 600);
 
     select_console('root-console');
+    diag "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM";
+    script_run 'zypper lr -d';
+    script_run 'zypper rr -a';
+    script_run 'zypper ref -f ';
+    script_run 'zypper lr -d';
+    script_run 'zypper ar http://download.opensuse.org/distribution/leap/15.3/repo/non-oss openSUSE-Leap-15.3-NonOss-Pool';
+    script_run 'zypper ar http://download.opensuse.org/repositories/openSUSE:/Leap:/15.3:/NonFree:/Update/standard openSUSE-Leap-15.3-NonOss-Updates';
+    script_run 'zypper ar http://download.opensuse.org/distribution/leap/15.3/repo/oss openSUSE-Leap-15.3-Pool';
+    script_run 'zypper ar http://download.opensuse.org/repositories/openSUSE:/Leap:/15.3:/Update/standard openSUSE-Leap-15.3-Updates'; 
+    diag "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM";
+    script_run 'zypper ref -f ';
+    script_run 'zypper lr -d';
+    diag "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM";
     # We need to install rollback-helper and enable/start rollback.service
     # before creating a snapshot.
     zypper_call 'in rollback-helper';

@@ -122,7 +122,8 @@ sub run {
     }
     # check if the migration success or not by checking the /etc/os-release file with the VERSION
     my $target_version = get_var("VERSION");
-    assert_script_run("grep VERSION= /etc/os-release | grep $target_version");
+    assert_script_run("cat  /etc/os-release");
+    #assert_script_run("grep VERSION= /etc/os-release | grep $target_version");
 
     select_console('root-console', await_console => 0);
     # wait long time for snapper to settle down
