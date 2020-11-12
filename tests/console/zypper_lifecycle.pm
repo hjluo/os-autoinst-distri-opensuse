@@ -56,6 +56,9 @@ sub run {
     # We add 'zypper ref' here to download and preparse the metadata of packages,
     # which will make the follow 'zypper lifecycle' runs faster.
     script_run('zypper ref');
+    diag  "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM";
+    script_run('ls -lR /var/cache/zypp');
+    diag  "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN";
     select_console 'user-console' unless $needs_root_console;
     my $overview = script_output('zypper lifecycle', 600);
     die "Missing header line:\nOutput: '$overview'" unless $overview =~ /Product end of support/;
