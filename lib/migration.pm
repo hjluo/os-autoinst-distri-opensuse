@@ -172,6 +172,8 @@ sub check_rollback_system {
 
     return unless is_sle;
     # Check SUSEConnect status for SLE
+    # Disable the obsolete cd and dvd repos to avoid zypper error
+    zypper_call("mr -d -m cd -m dvd");
     # check rollback-helper service is enabled and worked properly
     # If rollback service is activating, need wait some time
     # Add wait in a loop, max time is 10 minute, because case with much more modules need more time
@@ -181,8 +183,6 @@ sub check_rollback_system {
     }
     systemctl('is-active rollback');
 
-    # Disable the obsolete cd and dvd repos to avoid zypper error
-    zypper_call("mr -d -m cd -m dvd");
     # Verify registration status matches current system version
     # system is un-registered during media based upgrade
     unless (get_var('MEDIA_UPGRADE')) {
