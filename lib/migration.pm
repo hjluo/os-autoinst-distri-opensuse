@@ -47,6 +47,8 @@ sub setup_sle {
     # Stop packagekitd
     if (is_sle('12+')) {
         quit_packagekit;
+        # poo#88109 wait for packagekit related zypper process to exit
+        assert_script_run 'until ! pgrep zypper; do sleep 1; done';
     }
     else {
         assert_script_run "chmod 444 /usr/sbin/packagekitd";
