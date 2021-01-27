@@ -596,6 +596,10 @@ sub fill_in_registration_data {
         # Repo key expired bsc#1180619
         push @tags, 'expired-gpg-key' if is_sle('=15');
         while ($counter--) {
+    select_console 'root-console';
+    script_run 'cat /etc/zypp/credentials.d/SCCcredentials';
+    my $out = script_output 'cat /etc/zypp/credentials.d/SCCcredentials';
+    diag "MMMMMMMMMM->$out";
             die 'Registration repeated too much. Check if SCC is down.' if ($counter eq 1);
             assert_screen(\@tags, timeout => 360);
             if (match_has_tag('import-untrusted-gpg-key')) {
@@ -764,6 +768,9 @@ sub yast_scc_registration {
     );
 
     fill_in_registration_data;
+    script_run 'cat /etc/zypp/credentials.d/SCCcredentials';
+    my $out = script_output 'cat /etc/zypp/credentials.d/SCCcredentials';
+    diag "MMMMMMMMMM->$out";
     wait_serial("$module_name-0", 150) || die "yast scc failed";
     # To check repos validity after registration, call 'validate_repos' as needed
 }

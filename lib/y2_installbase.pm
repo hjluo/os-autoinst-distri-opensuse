@@ -521,6 +521,11 @@ sub save_upload_y2logs {
     # Do not recover network on non-qemu backend, as not implemented yet
     $args{no_ntwrk_recovery} //= (get_var('BACKEND') !~ /qemu/);
 
+    script_run 'cat /etc/zypp/credentials.d/SCCcredentials';
+    script_run("cat /etc/zypp/credentials.d/SCCcredentials > /dev/$serialdev");
+    my $out = script_output 'cat /etc/zypp/credentials.d/SCCcredentials';
+    diag "MMMMMMMMMM->$out";
+
     # Try to recover network if cannot reach gw and upload logs if everything works
     if (can_upload_logs() || (!$args{no_ntwrk_recovery} && recover_network())) {
         assert_script_run 'sed -i \'s/^tar \(.*$\)/tar --warning=no-file-changed -\1 || true/\' /usr/sbin/save_y2logs';
