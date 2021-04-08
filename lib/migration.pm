@@ -169,6 +169,8 @@ sub record_disk_info {
 sub check_rollback_system {
     # Check if repos are rolled back to correct version
     script_run("zypper lr -u | tee /dev/$serialdev");
+    script_run("grep VERSION= /etc/os-release | cut -d'=' -f2 | cut -d' ' -f1 | sed 's/\"//g'");
+    script_run("zypper lr | cut -d'|' -f3 ");
     my $incorrect_repos = script_output("
         version=\$(grep VERSION= /etc/os-release | cut -d'=' -f2 | cut -d' ' -f1 | sed 's/\"//g')
         base_version=\$(echo \$version | cut -d'-' -f1)
