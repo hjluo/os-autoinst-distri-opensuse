@@ -112,6 +112,9 @@ sub run {
     echo '$package, *, $testdate' > /var/lib/lifecycle/data/$prod.lifecycle";
     # verify eol from lifecycle data
     select_console 'user-console' unless $needs_root_console;
+    diag "MMMMM upload zypper log ...";
+    upload_logs '/var/log/zypper.log';
+    assert_script_run "zypper lifecycle $package", 300;
     $output = script_output "zypper lifecycle $package", 300;
     die "$package lifecycle entry incorrect:\nOutput: '$output'" unless $output =~ /$package(-\S+)?\s+$testdate/;
 
@@ -183,6 +186,8 @@ sub test_flags {
 
 sub post_fail_hook {
     my ($self) = shift;
+    diag "MMMMM upload zypper log ...";
+    upload_logs '/var/log/zypper.log';
     $self->SUPER::post_fail_hook;
     # Additionally collect executed scripts
     assert_script_run 'tar -cf /tmp/script_output.tgz /tmp/*.sh';
