@@ -44,7 +44,7 @@ sub run {
     add_suseconnect_product("SLES", $version, get_var("ARCH"), " -r " . get_var("SCC_REGCODE"), 300, 1);
     zypper_call 'lr';
     zypper_call '-n mr --all --disable';
-    assert_script_run "SUSEConnect --list-extensions";
+    #assert_script_run "SUSEConnect --list-extensions";
     register_product();
     register_addons_cmd("base,serverapp,legacy,desktop,phub");
     zypper_call('dup --force-resolution', timeout => 1800);
