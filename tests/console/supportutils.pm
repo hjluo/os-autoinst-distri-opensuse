@@ -23,6 +23,9 @@ use upload_system_log 'upload_supportconfig_log';
 
 sub run {
     my $self = shift;
+    select_console 'user-console';
+    script_run('zypper lifecycle', 600);
+
     $self->select_serial_terminal;
 
     my $options = get_var('SUPPORTCOFIG_OPTIONS', '');

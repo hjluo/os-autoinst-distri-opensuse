@@ -38,6 +38,9 @@ use testapi;
 
 # have various useful general info included in videos
 sub run {
+    select_console 'user-console';
+    script_run('zypper lifecycle', 600);
+
     select_console 'root-console';
     assert_script_run('curl -O ' . data_url('textinfo'));
     assert_script_run('chmod +x textinfo');

@@ -31,6 +31,11 @@ use warnings;
 sub run {
     my ($self) = @_;
     select_console 'root-console';
+    script_run('zypper refresh -f ', 1200);
+    script_run('zypper lifecycle', 1200);
+    select_console 'user-console';
+    script_run('zypper lifecycle', 1200);
+    select_console 'root-console';
 
     ensure_serialdev_permissions;
 
@@ -94,6 +99,7 @@ sub run {
 
     # stop and disable PackageKit
     quit_packagekit;
+
 }
 
 sub test_flags {

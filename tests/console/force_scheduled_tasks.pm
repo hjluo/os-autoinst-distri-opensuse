@@ -43,6 +43,8 @@ sub settle_load {
 }
 
 sub run {
+    select_console 'user-console';
+    script_run('zypper lifecycle', 600);
     select_console 'root-console';
 
     # show dmesg output in console during cron run
@@ -71,6 +73,12 @@ sub run {
 
     # return dmesg output to normal
     assert_script_run "dmesg -n 1";
+    select_console 'user-console';
+    script_run('zypper lifecycle', 600);
+    select_console 'root-console';
+    script_run('zypper refresh');
+    select_console 'user-console';
+    script_run('zypper lifecycle', 600);
 }
 
 sub test_flags {

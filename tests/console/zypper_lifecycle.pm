@@ -42,17 +42,9 @@ our $date_re = qr/[0-9]{4}-[0-9]{2}-[0-9]{2}/;
 sub run {
     diag('fate#320597: Introduce \'zypper lifecycle\' to provide information about life cycle of individual products and packages');
 
-    # Workaround for bsc#1166549, zypper lifecycle error with 'Error building the cache'.
-    # Currently the only workaround option is to run zypper-lifecycle as root.
-
-    # Now we just hit bsc#1166549 on s390x and ppc64le, so we just need root console
-    # on these two platforms.
-    my $needs_root_console = 0;
-    if ((is_s390x || is_ppc64le) && is_sle('>=15-SP3') && is_upgrade) {
-        $needs_root_console = 1;
-        record_soft_failure 'bsc#1166549 - zypper lifecycle failed to create metadata cache directory';
-    }
     select_console 'root-console';
+    # we need to refresh repo metadata.
+    assert_script_run('zypper refresh -f');
 
     # We add 'zypper ref' here to download and preparse the metadata of packages,
     # which will make the follow 'zypper lifecycle' runs faster.

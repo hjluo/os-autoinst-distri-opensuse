@@ -77,6 +77,12 @@ sub run {
         check_console_font;
         script_run '. /etc/bash.bashrc.local';
     }
+    select_console 'root-console';
+    script_run('zypper refresh -d', 600);
+    select_console 'user-console';
+    script_run('zypper lifecycle', 600);
+    select_console 'root-console';
+
 }
 
 sub post_fail_hook {
