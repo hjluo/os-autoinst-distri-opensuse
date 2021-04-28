@@ -32,7 +32,8 @@ use warnings;
 
 sub run {
     my $self = shift;
-    my $user = $testapi::username;
+    #my $user = $testapi::username;
+    my $user = 'root';
     $self->select_serial_terminal;
 
     systemctl('start sshd');

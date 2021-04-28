@@ -27,6 +27,7 @@ sub run {
     select_console 'user-console';
     assert_script_run "curl -L -v -f " . autoinst_url('/data') . " | cpio -id", timeout => 300;
     script_run "ls -al data";
+    select_console 'root-console';
 }
 
 sub test_flags {
