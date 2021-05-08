@@ -208,8 +208,10 @@ sub run {
     assert_screen 'yast2-migration-target';
     send_key "alt-p";    # focus on the item of possible migration targets
     assert_screen 'yast2-migration-target-list-selected', 60;
-    send_key_until_needlematch 'migration-target-' . get_var("VERSION"), 'down', 20, 3;
-    send_key "alt-n";
+    my $migrtion_target = 'migration-target-' . get_var("VERSION");
+    send_key_until_needlematch $migrtion_target, 'down', 20, 3;
+    send_key_until_needlematch([qw(import-untrusted-gpg-key yast2-migration-installupdate yast2-migration-proposal)], 'alt-n', 20, 5);
+
     # migration via smt will install packagehub and NVIDIA compute, we need click trust
     # gpg keys; Same with leap to sle migration, need to trust packagehub gpg key.
     if (get_var('SMT_URL') =~ /smt/) {
