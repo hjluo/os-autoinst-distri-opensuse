@@ -40,6 +40,7 @@ sub run {
     # generate ssh key and use same key for root and bernhard
     if (script_run('! test -e ~/.ssh/id_rsa') == 0) {
         assert_script_run('ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa');
+        assert_script_run('ssh-keygen -t rsa -N "" -y -f ~/.ssh/id_rsa');
     }
 
     # copy and add root key into authorized_keys and public key into known_hosts of both root and user
