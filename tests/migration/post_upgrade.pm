@@ -20,6 +20,9 @@ use utils 'get_x11_console_tty';
 
 sub run {
     # Reset HDDVERSION after upgrade
+    select_console 'user-console';
+    script_run('zypper lifecycle', 600);
+    select_console 'root-console';
     set_var('HDDVERSION', get_var('UPGRADE_TARGET_VERSION', get_var('VERSION')));
 }
 

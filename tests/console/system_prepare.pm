@@ -30,7 +30,6 @@ use warnings;
 
 sub run {
     my ($self) = @_;
-    select_console 'root-console';
 
     ensure_serialdev_permissions;
 
@@ -94,6 +93,9 @@ sub run {
 
     # stop and disable PackageKit
     quit_packagekit;
+    select_console 'user-console';
+    script_run('zypper lifecycle', 600);
+    select_console 'root-console';
 }
 
 sub test_flags {
