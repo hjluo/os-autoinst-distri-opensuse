@@ -64,7 +64,8 @@ our $default_services = {
         srv_pkg_name       => 'users',
         srv_proc_name      => 'users',
         support_ver        => $support_ver_ge12,
-        service_check_func => \&services::users::full_users_check
+        service_check_func => \&services::users::full_users_check,
+        service_cleanup_func => \&services::users::users_cleanup
     },
     hpcpackage_remain => {
         srv_pkg_name       => 'hpcpackage_remain',
@@ -263,11 +264,14 @@ sub install_services {
             }
         };
         if ($@) {
+            if (exists $service->{$s}->{service_cleanup_func}) {
+                $service->{$s}->{service_cleanup_func}->(%{$service->{$s}}, service_type => $service_type, stage => 'before');
+            }
             record_info($srv_pkg_name, "failed reason: $@", result => 'fail');
             $srv_check_results{'before_migration'} = 'FAIL' if $srv_check_results{'before_migration'} eq 'PASS';
-        }
-
+      }
     }
+
 }
 
 =head2 check_services
@@ -298,6 +302,9 @@ sub check_services {
             }
         };
         if ($@) {
+            if (exists $service->{$s}->{service_cleanup_func}) {
+                $service->{$s}->{service_cleanup_func}->(%{$service->{$s}}, service_type => $service_type, stage => 'after');
+            }
             record_info($srv_pkg_name, "failed reason: $@", result => 'fail');
             $srv_check_results{'after_migration'} = 'FAIL' if $srv_check_results{'after_migration'} eq 'PASS';
         }

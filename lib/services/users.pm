@@ -149,7 +149,7 @@ sub full_users_check {
     }
     # reset consoles before select x11 console will make the connect operation
     # more stable on s390x
-    reset_consoles             if check_var('ARCH',    's390x');
+    reset_consoles             if (check_var('ARCH', 's390x') || check_var('ARCH', 'aarch64'));
     turn_off_gnome_screensaver if check_var('DESKTOP', 'gnome');
     select_console 'x11', await_console => 0;
     wait_still_screen 5;
@@ -189,6 +189,23 @@ sub full_users_check {
         send_key "alt-f4";
         send_key "ret";
         select_console 'root-console';
+    }
+}
+
+# cleanup for exceptions drung before and after migration
+sub users_cleanup {
+    my (%hash) = @_;
+    my $stage = $hash{stage};
+    if ($stage eq 'before') {
+        select_console "root-console";
+        # my $setting_pid = script_output('pidof -s gnome-control-center');
+        script_run("kill -KILL $setting_pid");
+        script_run('pkill -KILL -u test');
+        script_run('userdel -r test');
+        reset_consoles;
+    }
+    else {
+        diag 'placehold  for after migration cleanup';
     }
 }
 
