@@ -24,6 +24,9 @@ use Utils::Architectures 'is_ppc64le';
 
 sub run {
     my ($self) = @_;
+    # if the base system is 11SPX or 12SPX and is a migration case, we don't need to
+    # check the firewall status after the migration.
+    return if (is_sle('<15', get_var('ORIGIN_SYSTEM_VERSION')) && is_upgrade);
     if ($self->firewall eq 'firewalld') {
         my $timeout = 30;
         $timeout = 60 if is_ppc64le;
