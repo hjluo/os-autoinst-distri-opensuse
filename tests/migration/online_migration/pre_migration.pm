@@ -21,6 +21,9 @@ use migration;
 use version_utils 'is_sle';
 
 sub check_or_install_packages {
+    zypper_call "se -s yast2-migration";
+    zypper_call "in yast2-migration zypper-migration-plugin rollback-helper snapper";
+
     if (get_var("FULL_UPDATE") || get_var("MINIMAL_UPDATE")) {
         # if system is fully updated or even minimal patch applied, all necessary packages for online migration should be installed
         # check if the packages was installed along with update
