@@ -151,7 +151,7 @@ sub disable_installation_repos {
 # Record disk info to help debug diskspace exhausted
 # issue during upgrade
 sub record_disk_info {
-    my $out = script_output 'findmnt -n -o fstype /';
+    my $out = script_output('findmnt -n -o fstype /', 120);
     if ($out =~ /btrfs/) {
         assert_script_run 'btrfs filesystem df / | tee /tmp/btrfs-filesystem-df.txt';
         assert_script_run 'btrfs filesystem usage / | tee /tmp/btrfs-filesystem-usage.txt';
