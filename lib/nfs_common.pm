@@ -83,7 +83,7 @@ sub add_shares {
     send_key 'tab';
     # Change 'ro,root_squash' to 'rw,no_root_squash,...'
     # For nfs4 also add fsid=0
-    send_key 'home';
+    send_key 'ctl-a';
     send_key 'delete';
     send_key 'delete';
     send_key 'delete';
