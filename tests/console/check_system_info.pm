@@ -84,6 +84,7 @@ sub check_buildid {
 
 sub run {
     select_console('root-console');
+    script_run("df -Th");
     assert_script_run('setterm -blank 0') unless (is_s390x);
 
     script_run('zypper lr | tee /tmp/zypperlr.txt');

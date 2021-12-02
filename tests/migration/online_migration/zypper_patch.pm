@@ -22,6 +22,7 @@ sub run {
     my ($self) = @_;
     select_console 'root-console';
 
+    script_run("df -Th");
     disable_installation_repos;
     add_test_repositories;
     fully_patch_system;
