@@ -193,10 +193,10 @@ Possible values for PATTERNS
 =cut
 sub process_patterns {
     my ($self) = @_;
+    set_var('PATTERNS', 'all');
     if (get_required_var('PATTERNS')) {
-        if (check_var('PATTERNS', 'all') && !check_var('VIDEOMODE', 'text')) {
+        if (check_var('PATTERNS', 'all')) {
             $self->select_all_patterns_by_menu();
-            $self->deselect_pattern() if get_var('EXCLUDE_PATTERNS');
         }
         else {
             $self->select_specific_patterns_by_iteration();
