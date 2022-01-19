@@ -96,6 +96,14 @@ sub run {
     # stop and disable PackageKit
     quit_packagekit;
 }
+sub post_fail_hook {
+    my ($self) = @_;
+    select_console 'root-console';
+    # Record the installed rpm list
+    assert_script_run 'rpm -qa > /tmp/rpm-qa.txt';
+    upload_logs '/tmp/rpm-qa.txt';
+}
+
 
 sub test_flags {
     return {milestone => 1, fatal => 1};

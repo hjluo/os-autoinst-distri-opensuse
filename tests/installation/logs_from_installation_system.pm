@@ -66,6 +66,9 @@ sub run {
         # avoid known issue in FIPS mode: bsc#985969
         $self->get_ip_address();
     }
+    # Record the installed rpm list
+    assert_script_run 'rpm -qa > /tmp/after-rpm-qa.txt';
+    upload_logs '/tmp/after-rpm-qa.txt';
 
     # We don't change network setup here, so should work
     # We don't parse logs unless it's detect_yast2_failures scenario
