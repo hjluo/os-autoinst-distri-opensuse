@@ -31,6 +31,8 @@ sub run {
     enter_cmd "loginctl --no-pager";
     wait_still_screen(2);
     save_screenshot();
+    script_run('w');
+    script_run('stat /dev/tty1');
 
     systemctl 'unmask packagekit.service';
     # On s390x sometimes the vnc will still be there and the next select_console
