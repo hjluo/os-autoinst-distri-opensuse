@@ -79,7 +79,7 @@ sub run {
         my $timeout = bmwqemu::scale_timeout(30);
         my $waittime = bmwqemu::scale_timeout(5);
         while (1) {
-            $out = script_output("SUSEConnect --status-text", proceed_on_failure => 1);
+            $out = script_output("SUSEConnect --status-text", proceed_on_failure => 1, timeout =>180);
             last if (($timeout < 0) || ($out !~ /System management is locked by the application with pid/));
             sleep $waittime;
             $timeout -= $waittime;
