@@ -36,6 +36,7 @@ sub check_or_install_packages {
             # if system is fully updated or even minimal patch applied,
             # all necessary packages for online migration should be installed
             assert_script_run("rpm -q $_") foreach qw(yast2-migration zypper-migration-plugin rollback-helper);
+            zypper_call('info yast2-migration');
         }
     } else {
         # install necessary packages for online migration if system is not updated
