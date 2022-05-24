@@ -523,7 +523,7 @@ sub process_scc_register_addons {
         push @needles, 'sles4sap-product-installation-mode' if (is_sles4sap() && is_sle('<=12-SP3'));
         while ($counter--) {
             die 'Addon registration repeated too much. Check if SCC is down.' if ($counter eq 1);
-            assert_screen([@needles], 90);
+            assert_screen([@needles], 180);
             if (match_has_tag('import-untrusted-gpg-key')) {
                 handle_untrusted_gpg_key;
                 next;
