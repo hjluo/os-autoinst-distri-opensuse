@@ -160,6 +160,7 @@ sub run {
         check_reboot_changes;
         check_migrated_version;
     } else {
+        assert_script_run("cat /etc/os-release");
         power_action('reboot', textmode => 1);
         reconnect_mgmt_console if is_pvm;
         # Do not attempt to log into the desktop of a system installed with SLES4SAP
