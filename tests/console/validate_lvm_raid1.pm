@@ -33,7 +33,7 @@ sub run {
 
 sub _check_lvm_partitioning {
     my ($config) = @_;
-    my $activelvm = script_output q[lvscan | awk '{print $2}' | sed s/\'//g];
+    my $activelvm = script_output(q[lvscan | awk '{print $2}' | sed s/\'//g], timeout => 120);
     assert_equals $config->{lvm}->{lvpath}, $activelvm, "lv name is not the same. \n" . script_output q[lvscan];
     my $pvname = script_output q[pvscan -s | grep '/dev'];
     assert_equals $config->{lvm}->{pvname}, $pvname, "pv name is not the same.";
