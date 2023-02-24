@@ -24,7 +24,7 @@ sub init {
 
 sub is_shown {
     my ($self) = @_;
-    return $self->{lbl_separate_code}->exist();
+    return $self->{lbl_separate_code}->exist({timeout=>120, interval =>10});
 }
 
 sub set_we_regcode {
