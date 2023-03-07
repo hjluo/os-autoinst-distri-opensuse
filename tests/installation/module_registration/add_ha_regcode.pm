@@ -16,6 +16,7 @@ use testapi qw(save_screenshot get_var);
 sub run {
     my $timeout = 60 * get_var('TIMEOUT_SCALE', 1);
     my $regcode = get_var('SCC_REGCODE_HA');
+    bmwqemu::diag(">>>> In test call distri->wait_registration_common_regcode_finished");
     $testapi::distri->wait_registration_common_regcode_finished({timeout => $timeout, interval => 2, message => 'Page to insert module registration code did not appear'});
     $testapi::distri->get_module_regcode()->add_separate_ha_registration_code($regcode, $timeout);
 }

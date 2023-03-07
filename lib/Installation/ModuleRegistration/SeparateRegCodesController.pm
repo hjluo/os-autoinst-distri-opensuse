@@ -41,6 +41,7 @@ sub get_untrusted_GPG_popup {
 
 sub wait_registration_common_regcode_finished {
     my ($self, $args) = @_;
+    bmwqemu::diag(">>>>>>>>>wait_registration_common_regcode_finished");
     YuiRestClient::Wait::wait_until(object => sub {
             $self->{SeparateRegCodesPage}->is_shown({timeout => 0});
     }, %$args);

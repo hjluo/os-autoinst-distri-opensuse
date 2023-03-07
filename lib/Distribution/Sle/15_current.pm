@@ -63,6 +63,7 @@ sub get_module_registration_installation_report {
 }
 
 sub wait_registration_common_regcode_finished {
+    bmwqemu::diag(">>>>New>>>15_current>wait_registration_common_regcode_finished");
     return Installation::ModuleRegistration::SeparateRegCodesController->new();
 }
 
