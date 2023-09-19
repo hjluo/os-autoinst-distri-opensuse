@@ -28,6 +28,9 @@ sub run {
     zypper_enable_install_dvd;
     # make sure that save_y2logs from yast2 package, tar and bzip2 are installed
     # even on minimal system
+    record_info('Installed patterns', script_output('zypper pt -i', proceed_on_failure => 1));
+    record_info('All patterns', script_output('zypper pt -u', proceed_on_failure => 1));
+
     zypper_call 'in yast2 tar bzip2';
     assert_script_run 'save_y2logs /tmp/y2logs.tar.bz2';
     upload_logs '/tmp/y2logs.tar.bz2';
