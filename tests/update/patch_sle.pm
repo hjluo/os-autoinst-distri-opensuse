@@ -67,6 +67,16 @@ sub patching_sle {
             select_console 'root-console';
             # Perform sync ahead of reboot to flush filesystem buffers
             assert_script_run 'sync', 600;
+            assert_script_run 'df -h /boot', 600;
+            assert_script_run 'df -h ', 600;
+            assert_script_run 'cat /boot/grub2/grub.cfg', 600;
+            assert_script_run 'cp /boot/grub2/grub.cfg /tmp/grub.cfg.txt', 600;
+            upload_logs '/tmp/grub.cfg.txt';
+            assert_script_run 'rpm -qa > /tmp/rpm-qa.txt'; 
+            upload_logs '/tmp/rpm-qa.txt';
+            script_run "save_y2logs /tmp/yast2log.tar", 180;
+            upload_logs('/tmp/yast2log.tar', failok => 1);
+
             # Open gdm debug info for poo#45236, this issue happen sometimes in openqa env
             script_run('sed -i s/#Enable=true/Enable=true/g /etc/gdm/custom.conf');
             # Remove '-f' for reboot for poo#65226
