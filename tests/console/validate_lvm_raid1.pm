@@ -27,7 +27,7 @@ sub run {
     _check_raid1_partitioning($config, $expected_num_devs);
     _remove_raid_disk($config, $expected_num_devs);
     _reboot();
-    $self->wait_boot;
+    $self->wait_boot(textmode => 1, ready_time => 600, bootloader_time => 300);
     _check_raid_disks_after_reboot($config, $expected_num_devs);
 }
 
@@ -69,7 +69,7 @@ sub _remove_raid_disk {
 
 sub _reboot {
     record_info('system reboots');
-    power_action('reboot', textmode => 'textmode');
+    power_action('reboot', textmode => 1);
 }
 
 sub _check_raid_disks_after_reboot {
