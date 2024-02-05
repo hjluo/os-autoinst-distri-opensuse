@@ -7,6 +7,7 @@ schedule:
   - installation/disk_activation
   - installation/scc_registration
   - installation/addon_products_sle
+  - installation/system_role
   - installation/partitioning
   - installation/partitioning_finish
   - installation/installer_timezone
