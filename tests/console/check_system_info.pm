@@ -71,6 +71,8 @@ sub check_product {
             $product = $proname{$mypro};
         }
     }
+    bmwqemu::diag("product=$product");
+    script_output("zypper lr");
     my $out = script_output("zypper lr | grep -i $product", 200, proceed_on_failure => 1);
     die "zypper lr command output does not include $product" if ($out eq '');
 }
@@ -97,6 +99,7 @@ sub run {
         my $addons = get_var('SCC_ADDONS', "");
         $addons =~ s/ltss,?//g;
         check_addons($addons);
+        bmwqemu::diag("calling check_product before");
         check_product("before");
     }
 
