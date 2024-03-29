@@ -464,6 +464,7 @@ console, enable core dumps and set debug level for logging.
 
 =cut
 
+
 sub get_linuxrc_boot_params {
     my @params;
     push @params, "linuxrc.log=/dev/$serialdev";
@@ -489,11 +490,9 @@ sub bootmenu_default_params {
         if (check_var('VIDEOMODE', 'text')) {
             push @params, "textmode=1";
         }
-        push @params, "Y2DEBUG=1";
     }
     else {
         # On JeOS and MicroOS we don't have YaST installer.
-        push @params, "Y2DEBUG=1" unless is_jeos || is_microos || is_selfinstall;
 
         # gfxpayload variable replaced vga option in grub2
         if (!is_jeos && !is_microos && !is_selfinstall && (is_i586 || is_x86_64)) {
