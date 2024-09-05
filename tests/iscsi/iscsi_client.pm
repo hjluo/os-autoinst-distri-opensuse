@@ -108,10 +108,19 @@ sub initiator_connected_targets_tab {
 
 sub run {
     prepare_xterm_and_setup_static_network(ip => $test_data->{initiator_conf}->{ip}, message => 'Configure MM network - client');
-    zypper_call("in open-iscsi yast2-iscsi-client");
+
+    record_info("INFO", "Step 1. wget bsc1225047-test-RPMs.tgz");
+    assert_script_run "wget --quiet " . data_url('bsc1225047-test-RPMs.tgz') . " -O /tmp/bsc1225047-test-RPMs.tgz";
+    assert_script_run("gzip -dc /tmp/bsc1225047-test-RPMs.tgz | tar xvf -");
+    record_info("INFO", "Step 2. install libopeniscsiusr0_2_0-2.1.7-150300.32.30.1");
+    assert_script_run("rpm -ivh ./binaries/libopeniscsiusr0_2_0-2.1.7-150300.32.30.1.x86_64.rpm");
+    record_info("INFO", "Step 3. install open-iscsi-2.1.7-150300.32.30.1");
+    assert_script_run("rpm -ivh ./binaries/open-iscsi-2.1.7-150300.32.30.1.x86_64.rpm");
+    assert_script_run("rpm -qi open-iscsi");
+    record_info("INFO", "Step 4. install yast2-iscsi-client");
+    zypper_call("in yast2-iscsi-client");
     mutex_wait('iscsi_target_ready', undef, 'Target configuration in progress!');
     record_info 'Target Ready!', 'iSCSI target is configured, start initiator configuration';
-    apply_workaround_bsc1206132() if (is_sle('=15-SP3'));
     my $module_name = y2_module_guitest::launch_yast2_module_x11('iscsi-client', target_match => 'iscsi-client');
     initiator_service_tab;
     initiator_discovered_targets_tab;
