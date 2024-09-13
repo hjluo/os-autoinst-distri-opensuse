@@ -35,5 +35,16 @@ sub run {
     save_screenshot;
 }
 
+sub test_flags {
+    return {fatal => 0};
+}
+
+sub post_fail_hook {
+    script_run('pkill -TERM -e yast2');
+    assert_script_run 'save_y2logs /tmp/y2logs_clone.tar.bz2';
+    upload_logs '/tmp/y2logs_clone.tar.bz2';
+}
+
+
 1;
 

@@ -2501,6 +2501,11 @@ sub install_patterns {
             record_soft_failure('bsc#1202478 - skip pattern Amazon-Web-Service');
             next;
         }
+        # skip the installation of fips-certified due to bsc#1228852
+        if ($pt =~ /fips-certified/) {
+            record_soft_failure('bsc#1228852 - skip pattern fips-certified');
+            next;
+        }
         # For Public cloud module test we need install 'Tools' but not 'Instance' pattern if outside of public cloud images.
         next if (($pt =~ /OpenStack/) && ($pt !~ /Tools/) && !is_public_cloud);
         # skip installation of wsl_base, wsl_gui and wsl_systemd patterns due to bsc#1226314.

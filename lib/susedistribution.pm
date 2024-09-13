@@ -698,6 +698,13 @@ sub init_consoles {
                 username => 'root'
             });
     }
+    if (get_var('AGAMA')) {
+        $self->add_console('installation', 'tty-console', {tty => 2});
+    }
+    else {
+        $self->add_console('installation', 'tty-console', {tty => check_var('VIDEOMODE', 'text') ? 1 : 7});
+    }
+
     return;
 }
 
