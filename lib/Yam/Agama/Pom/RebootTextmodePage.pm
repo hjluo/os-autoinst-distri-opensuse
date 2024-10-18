@@ -17,6 +17,11 @@ sub new {
     return bless {}, $class;
 }
 
+sub expect_is_shown {
+    my ($self, %args) = @_;
+    my $timeout = $args{timeout};
+}
+
 sub reboot {
     my ($self) = @_;
     enter_cmd 'reboot';
