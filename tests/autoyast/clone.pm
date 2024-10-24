@@ -18,6 +18,19 @@ use utils qw(zypper_call);
 sub run {
     my $self = shift;
     assert_script_run 'rm -f /root/autoinst.xml';
+    assert_script_run "wget -O grub2-2.12-150500.39.1.x86_64.rpm  " . data_url("grub2-2.12-150500.39.1.x86_64.rpm");
+    assert_script_run "wget -O grub2-i386-pc-2.12-150500.39.1.noarch.rpm " . data_url("grub2-i386-pc-2.12-150500.39.1.noarch.rpm");
+    assert_script_run "wget -O grub2-x86_64-efi-2.12-150500.39.1.noarch.rpm " . data_url("grub2-x86_64-efi-2.12-150500.39.1.noarch.rpm");
+    assert_script_run "wget -O grub2-snapper-plugin-2.12-150500.39.1.noarch.rpm  " . data_url("grub2-snapper-plugin-2.12-150500.39.1.noarch.rpm");
+    assert_script_run "wget -O grub2-systemd-sleep-plugin-2.12-150500.39.1.noarch.rpm " . data_url("grub2-systemd-sleep-plugin-2.12-150500.39.1.noarch.rpm");
+
+    script_run('rpm -ivh ./*.rpm  --nosignature --force');
+    #script_run('rpm -ivh grub2-systemd-sleep-plugin-2.12-150500.39.1.noarch.rpm --nosignature --force');
+    #script_run('rpm -ivh grub2-2.12-150500.39.1.x86_64.rpm --nosignature --force');
+    #script_run('rpm -ivh grub2-i386-pc-2.12-150500.39.1.noarch.rpm --nosignature --force');
+    #script_run('rpm -ivh grub2-x86_64-efi-2.12-150500.39.1.noarch.rpm --nosignature --force');
+    #script_run('rpm -ivh grub2-snapper-plugin-2.12-150500.39.1.noarch.rpm --nosignature --force');
+
     zypper_call('in autoyast2', 300);
     my $module_name = y2_module_consoletest::yast2_console_exec(yast2_module => 'clone_system', yast2_opts => '--ncurses');
     if (check_screen 'autoyast2-install-accept', 10) {
