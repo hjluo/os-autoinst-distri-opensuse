@@ -48,6 +48,16 @@ sub run {
         assert_script_run('umount /mnt');
     }
 
+    my $stor_inst = "/var/log/YaST2/storage-inst/*committed.yml";
+    assert_script_run("cat $stor_inst");
+    my $boot_hd = script_output("cat $stor_inst | grep -B4 'mount_point: \"/\"' | grep name | awk -F \\\" '{print \$2}'");
+    assert_script_run("mount $boot_hd /mnt");
+    # assert_script_run("sed -i -e 's/security=apparmor/security=apparmor systemd.mask=systemd-hwdb-update.service/g' /mnt/boot/grub2/grub.cfg");
+    assert_script_run("sed -i -e 's/security=apparmor/security=apparmor udev.log_level=debug/g' /mnt/boot/grub2/grub.cfg");
+    diag "check /etc/dracut.conf.d/10-disable-haveged.conf";
+    # script_run('echo omit_dracutmodules+=\" haveged \" > /mnt/etc/dracut.conf.d/10-disable-haveged.conf');
+    # script_run('cat /mnt/etc/dracut.conf.d/10-disable-haveged.conf');
+    assert_script_run('umount /mnt');
     # In FIPS + disk encrypted, if the system has a separate boot partition
     # it is required to add it to the kernel parameters, or booting the
     # system will likely fail (bsc#1198190)
