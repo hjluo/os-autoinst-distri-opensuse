@@ -2,6 +2,7 @@
 
 [![Build Status](https://github.com/os-autoinst/os-autoinst-distri-opensuse/workflows/ci/badge.svg)](https://github.com/os-autoinst/os-autoinst-distri-opensuse/actions)
 
+
 Status of [openSUSE Tumbleweed](https://get.opensuse.org/tumbleweed/) tests:
 | Test | Badge |
 | --- | --- |

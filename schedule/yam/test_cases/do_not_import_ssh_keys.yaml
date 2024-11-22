@@ -14,5 +14,7 @@ schedule:
   security:
     - installation/ssh_host_key_settings/do_not_import_ssh_host_keys
   system_validation:
+    - console/system_prepare
+    - console/hostname
     - installation/ssh_host_key_settings/verify_ssh_key_not_imported
     - shutdown/shutdown
