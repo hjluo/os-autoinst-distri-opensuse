@@ -1,0 +1,81 @@
+{
+  "product": {
+    "id": "SLES_16.0"
+  },
+  "user": {
+    "fullName": "Bernhard M. Wiedemann",
+    "password": "$6$vYbbuJ9WMriFxGHY$gQ7shLw9ZBsRcPgo6/8KmfDvQ/lCqxW8/WnMoLCoWGdHO6Touush1nhegYfdBbXRpsQuy/FTZZeg7gQL50IbA/",
+    "encryptedPassword": true,
+    "userName": "bernhard"
+  },
+  "root": {
+    "password": "$6$vYbbuJ9WMriFxGHY$gQ7shLw9ZBsRcPgo6/8KmfDvQ/lCqxW8/WnMoLCoWGdHO6Touush1nhegYfdBbXRpsQuy/FTZZeg7gQL50IbA/",
+    "encryptedPassword": true
+  },
+  "software": {
+    "patterns": []
+  },
+  "storage": {
+    "guided": {
+      "target": {
+        "disk": "/dev/mapper/0QEMU_QEMU_HARDDISK_hd0"
+      },
+      "boot": {
+        "configure": true
+      },
+      "space": {
+        "policy": "delete"
+      },
+      "volumes": [
+        {
+          "mount": {
+            "path": "/",
+            "options": [
+
+            ]
+          },
+          "size": "auto",
+          "target": "default",
+          "filesystem": {
+            "btrfs": {
+              "snapshots": true
+            }
+          }
+        },
+        {
+          "mount": {
+            "path": "swap",
+            "options": [
+
+            ]
+          },
+          "size": {
+            "min": 1073741824,
+            "max": 2147483648
+          },
+          "target": "default",
+          "filesystem": "swap"
+        }
+      ]
+    }
+  },
+  "network": {
+    "connections": [
+      {
+        "id": "Wired connection 1",
+        "method4": "auto",
+        "method6": "auto",
+        "ignoreAutoDns": false,
+        "interface": "ens4",
+        "status": "up",
+        "autoconnect": true
+      }
+    ]
+  },
+  "localization": {
+    "language": "en_US.UTF-8",
+    "keyboard": "us",
+    "timezone": "Europe/Berlin"
+  },
+  "scripts": {}
+}
