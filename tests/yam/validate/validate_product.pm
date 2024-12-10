@@ -23,6 +23,10 @@ sub run {
     my $os_release_name = Config::Tiny->read_string($os_release_output)->{_}->{NAME};
 
     assert_equals("\"" . $os_release_name_expected . "\"", $os_release_name, 'Wrong product NAME in /etc/os-release');
+
+    record_info('multipath -l', script_output('multipath -l'));
+    record_info('multipath -d -v1', script_output('multipath -d -v1'));
+    record_info('multipath -d -v3', script_output('multipath -d -v3'));
 }
 
 1;

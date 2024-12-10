@@ -59,6 +59,7 @@ sub run {
     $grub_entry_edition->type(\@params);
     $grub_entry_edition->boot();
     $agama_up_an_running->expect_is_shown();
+    sleep 1200;
 }
 
 1;

@@ -18,6 +18,17 @@ sub post_fail_hook {
 
 sub upload_agama_logs {
     select_console 'root-console';
+
+    record_info('agama config show', script_output('agama config show'));
+    record_info('multipathd.socket', script_output('systemctl status multipathd.socket'));
+    record_info('multipathd', script_output('systemctl status multipathd'));
+    record_info('multipath -l', script_output('multipath -l'));
+    record_info('multipath -d -v1', script_output('multipath -d -v1'));
+    record_info('multipath -d -v3', script_output('multipath -d -v3'));
+
+    script_run("tar czf /tmp/agama_scripts.tar.gz /run/agama/scripts");
+    upload_logs("/tmp/agama_scripts.tar.gz", failok => 1);
+
     save_and_upload_log('agama config show > /tmp/agama-config.json', "/tmp/agama-config.json", {timeout => 60});
     script_run("agama logs store -d /tmp/agama-logs", {timeout => 60});
     upload_logs("/tmp/agama-logs.tar.gz", failok => 1);
