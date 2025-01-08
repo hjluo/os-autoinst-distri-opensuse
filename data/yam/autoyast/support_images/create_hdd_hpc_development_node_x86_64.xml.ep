@@ -1,22 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE profile>
 <profile xmlns="http://www.suse.com/1.0/yast2ns" xmlns:config="http://www.suse.com/1.0/configns">
-  <bootloader t="map">
-    <global t="map">
-      <append>splash=silent video=1024x768 plymouth.ignore-serial-consoles console=ttyS0 console=tty kernel.softlockup_panic=1 quiet security=apparmor mitigations=auto</append>
-      <cpu_mitigations>auto</cpu_mitigations>
-      <gfxmode>auto</gfxmode>
-      <hiddenmenu>false</hiddenmenu>
-      <os_prober>false</os_prober>
-      <secure_boot>true</secure_boot>
-      <terminal>gfxterm</terminal>
-      <timeout t="integer">-1</timeout>
-      <trusted_grub>false</trusted_grub>
-      <update_nvram>true</update_nvram>
-      <xen_kernel_append>vga=gfx-1024x768x16</xen_kernel_append>
+  <bootloader>
+    <global>
+      <timeout config:type="integer">-1</timeout>
     </global>
-    <loader_type>grub2</loader_type>
-  </bootloader>
+  </bootloader> 
   <firewall t="map">
     <default_zone>public</default_zone>
     <enable_firewall t="boolean">true</enable_firewall>
