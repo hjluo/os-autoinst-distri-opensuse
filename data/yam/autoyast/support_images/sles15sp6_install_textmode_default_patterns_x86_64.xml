@@ -3,7 +3,6 @@
     <global t="map">
       <timeout t="integer">-1</timeout>
     </global>
-    <loader_type>grub2</loader_type>
   </bootloader>
   <firewall t="map">
     <enable_firewall t="boolean">true</enable_firewall>

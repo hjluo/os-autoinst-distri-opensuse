@@ -3,7 +3,6 @@
     <global t="map">
       <timeout t="integer">-1</timeout>
     </global>
-    <loader_type>grub2</loader_type>
   </bootloader>
   <firewall t="map">
     <default_zone>public</default_zone>
@@ -133,19 +132,21 @@ exit 0
   </services-manager>
   <software t="map">
     <packages t="list">
+      <package>yast2-users</package>
+      <package>yast2-bootloader</package>
       <package>xfsprogs</package>
       <package>wicked</package>
-      <package>sle-module-server-applications-release</package>
-      <package>sle-module-python3-release</package>
+      <package>snapper</package>
+      <package>sles-release</package>
       <package>sle-module-basesystem-release</package>
-      <package>openssh</package>
+      <package>kexec-tools</package>
       <package>kdump</package>
-      <package>iproute2</package>
       <package>grub2</package>
       <package>glibc</package>
-      <package>firewalld</package>
       <package>e2fsprogs</package>
+      <package>bzip2</package>
       <package>btrfsprogs</package>
+      <package>autoyast2-installation</package>
       <package>autoyast2</package>
     </packages>
     <patterns t="list">
