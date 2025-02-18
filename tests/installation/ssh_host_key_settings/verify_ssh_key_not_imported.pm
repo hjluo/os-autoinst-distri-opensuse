@@ -13,6 +13,14 @@ use warnings;
 use testapi;
 
 sub run {
+    x11_start_program('gnome-terminal');
+    wait_still_screen 2, 2;
+    become_root;
+    assert_script_run("zypper ar http://download.suse.de/ibs/home:/AZhou:/branches:/SUSE:/SLE-15-SP7:/GA/standard/ AZhou");
+    assert_script_run("zypper in mutter mutter-lang);
+    enter_cmd "exit";
+    enter_cmd "exit";
+
     x11_start_program('xterm -geometry 150x45+5+5', target_match => 'xterm');
     become_root;
     script_run 'cd /etc/ssh';
