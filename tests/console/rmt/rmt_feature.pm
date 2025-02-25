@@ -126,7 +126,7 @@ sub run {
     my $datafile = get_var("ASSET_1");
     assert_script_run("mkdir -p $datapath");
     assert_script_run("cd $datapath");
-    assert_script_run("wget -q " . data_url('ASSET_1'));
+    assert_script_run("wget -v " . data_url('ASSET_1'));
     assert_script_run("tar -xzvf $datafile -C $datapath");
     assert_script_run("chown -R _rmt:nginx $datapath");
     assert_script_run("sudo rmt-data-import -d /rmtdata/smt-data-export/");
