@@ -22,6 +22,7 @@ Needles for openSUSE distributions are located in [os-autoinst-needles-opensuse]
 
 Some documentation from the test library is published at https://os-autoinst.github.io/os-autoinst-distri-opensuse/, however this is still WIP
 
+
 For more details see http://open.qa/
 
 Please, find test variables description [here](https://github.com/os-autoinst/os-autoinst-distri-opensuse/blob/master/variables.md)
