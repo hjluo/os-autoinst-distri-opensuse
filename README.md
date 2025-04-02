@@ -37,6 +37,7 @@ Please, refer to [Contributing Guide](https://github.com/os-autoinst/os-autoinst
 ## How to get in touch
 Reach us via https://open.qa/contact, we are also on twitter as https://twitter.com/openQAhq
 
+
 You can also read about some of the teams at https://progress.opensuse.org/projects/qa/wiki
 
 ## License
