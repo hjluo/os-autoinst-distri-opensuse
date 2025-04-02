@@ -34,6 +34,7 @@ In case of adding new test for Installation, please use approach described in th
 ## How to contribute
 Please, refer to [Contributing Guide](https://github.com/os-autoinst/os-autoinst-distri-opensuse/blob/master/CONTRIBUTING.md)
 
+
 ## How to get in touch
 Reach us via https://open.qa/contact, we are also on twitter as https://twitter.com/openQAhq
 
