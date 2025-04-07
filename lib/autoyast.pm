@@ -783,7 +783,18 @@ sub expand_agama_profile {
     save_tmp_file($profile_expanded, $content);
     my $profile_url = autoinst_url . "/files/$profile_expanded";
     upload_profile(path => $profile_expanded, profile => $content);
+    record_info("upload_profile ->$profile_expanded", script_out("cat $profile_expanded"));
     return $profile_url;
+}
+
+sub expand_jsonnet_vars {
+    my ($profile) = @_;
+    my @vars = qw(PATTERNS PACKAGES);
+    for my $var (@vars) {
+        next unless my ($value) = get_var($var);
+        $profile =~ s/\{\{$var\}\}/$value/g;
+    }
+    return $profile;
 }
 
 =head2 generate_json_profile
@@ -796,16 +807,23 @@ sub expand_agama_profile {
 
 sub generate_json_profile {
     my $profile_name = "generated_profile.json";
-    my $profile_path = get_required_var('CASEDIR') . "/data/" . get_required_var('INST_AUTO');
+    my $agama_auto = get_required_var('INST_AUTO');
+    my $profile_path = get_required_var('CASEDIR') . "/data/" . $agama_auto;
+    my $expanded_profile = "template.libsonnet.expanded";
+
+    my $expanded_content = expand_jsonnet_vars(get_test_data($agama_auto));
+    save_tmp_file($expanded_profile, $expanded_content);
+    assert_script_run("curl -O " . join('/', autoinst_url, 'files', $expanded_profile,));
 
     my @profile_options = map { " --tla-" . (/true|false/ ? "code" : "str") . " $_" }
       split(' ', trim(get_var('AGAMA_PROFILE_OPTIONS')));
-    diag "jsonnet @profile_options $profile_path";
-    my $profile_content = `jsonnet @profile_options $profile_path`;
+    diag "jsonnet @profile_options $expanded_profile";
+    my $profile_content = `jsonnet @profile_options $expanded_profile`;
     record_info("Profile", $profile_content);
 
     save_tmp_file($profile_name, $profile_content);
     my $profile_url = autoinst_url("/files/$profile_name");
+    diag "profile_url = $profile_url";
     upload_profile(path => $profile_name, profile => $profile_content);
     return $profile_url;
 }
