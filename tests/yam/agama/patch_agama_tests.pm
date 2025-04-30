@@ -8,10 +8,13 @@
 use base Yam::Agama::patch_agama_base;
 use strict;
 use warnings;
-use testapi qw(assert_script_run get_required_var select_console);
+use testapi qw(assert_script_run get_required_var select_console script_run);
 
 sub run {
     select_console 'root-console';
+    script_run('pgrep firefox');
+    script_run('pgrep gnome-session');
+    script_run('ps -elf | grep -i icewm');
     my ($repo, $branch) = split /#/, get_required_var('YUPDATE_GIT');
     assert_script_run("AGAMA_TEST=" . get_required_var('AGAMA_TEST') . " yupdate patch $repo $branch", timeout => 60);
 }
