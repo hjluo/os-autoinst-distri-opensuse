@@ -43,6 +43,8 @@
         content: |||
           #!/usr/bin/env bash
           echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
+          # enable gdm debugging
+          sed -i s/#Enable=true/Enable=true/g /etc/gdm/custom.conf
         |||,
       },
     ],
