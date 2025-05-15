@@ -10,15 +10,50 @@ use strict;
 use warnings;
 
 use testapi;
-use Utils::Architectures qw(is_s390x is_ppc64le);
-use Utils::Backends qw(is_svirt is_hyperv);
+use Utils::Backends qw(is_hyperv);
 use power_action_utils 'power_action';
-use version_utils qw(is_vmware is_leap);
+use version_utils qw(is_leap);
 
 sub run {
+    select_console 'root-console';
+
     my $self = shift;
-    my $reboot_page = $testapi::distri->get_reboot();
-    $reboot_page->expect_is_shown();
+
+    my $timeout = 30 * 60;
+    my $check_interval = 30;
+    my $auto_success = 0;
+    my $install_success = 0;
+
+    # Start time
+    my $start_time = time();
+    my $end_time = $start_time + $timeout;
+
+    diag("Starting to monitor Agama installation logs...");
+    while (time() < $end_time) {
+        if (!$auto_success) {
+            my $auto_output = script_output('journalctl -u agama-auto --no-pager -n 5');
+            if ($auto_output =~ /agama-auto\.service: Deactivated successfully/) {
+                $auto_success = 1;
+                record_info("journalctl", "Found 'agama-auto.service: Deactivated successfully'");
+            }
+        }
+        if (!$install_success) {
+            my $install_output = script_output('journalctl -u agama --no-pager -n 5');
+            if ($install_output =~ /\[INFO\]: manager: Finished the installation \(stop\)\./) {
+                $install_success = 1;
+                record_info("journalctl", "Found 'manager: Finished the installation'");
+            }
+        }
+
+        if ($auto_success && $install_success) {
+            my $elapsed = time() - $start_time;
+            record_info("Install finished", "Installation completed successfully after $elapsed seconds!");
+            last;
+        }
+        sleep($check_interval);
+    }
+
+    die "Installation didn't complete within the expected time frame." if (!$auto_success || !$install_success);
 
     if (!is_leap()) {
         # While the work on Agama settles, on leap
@@ -27,11 +62,7 @@ sub run {
         $self->upload_agama_logs() unless is_hyperv();
     }
 
-    (is_s390x() || is_ppc64le() || is_vmware()) ?
-      # reboot via console
-      power_action('reboot', keepconsole => 1, first_reboot => 1) :
-      # graphical reboot
-      $reboot_page->reboot();
+    power_action('reboot', keepconsole => 1, first_reboot => 1);
 }
 
 1;

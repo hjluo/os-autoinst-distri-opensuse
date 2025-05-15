@@ -88,11 +88,7 @@ sub run {
     $grub_entry_edition->type(\@params);
     $grub_entry_edition->boot();
 
-    if (get_var('EXTRABOOTPARAMS', '') =~ /systemd.unit=multi-user.target/) {
-        wait_serial('Connect to the Agama installer using these URLs:', 300) || die "Agama installer didn't start";
-    } else {
-        $agama_up_an_running->expect_is_shown();
-    }
+    wait_serial('Connect to the Agama installer using these URLs:', 300) || die "Agama installer didn't start";
 }
 
 sub post_fail_hook {
