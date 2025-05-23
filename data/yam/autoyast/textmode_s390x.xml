@@ -113,6 +113,19 @@
             <username>root</username>
         </user>
     </users>
+  <scripts>
+    <post-scripts config:type="list">
+      <script>
+        <filename>post.sh</filename>
+        <interpreter>shell</interpreter>
+        <source><![CDATA[
+#!/bin/bash
+  echo "PermitRootLogin yes" >> /etc/ssh/sshd_config.d/root.conf
+  systemctl restart sshd
+]]></source>
+      </script>
+    </post-scripts>
+  </scripts>
     <report>
       <errors>
         <log config:type="boolean">true</log>
