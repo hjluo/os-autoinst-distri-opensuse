@@ -18,6 +18,7 @@ Why the name *osado*? Two reasons:
    to be :)
 2. *osado* is an acronym of **os**-**a**utoinst-**d**istri-**o**pensuse
 
+
 Needles for openSUSE distributions are located in [os-autoinst-needles-opensuse](https://github.com/os-autoinst/os-autoinst-needles-opensuse)
 
 Some documentation from the test library is published at https://os-autoinst.github.io/os-autoinst-distri-opensuse/, however this is still WIP
