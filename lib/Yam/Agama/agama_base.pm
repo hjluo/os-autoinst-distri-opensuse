@@ -32,6 +32,11 @@ sub upload_agama_logs {
     my $full_log_path = script_output("find /root/Downloads/ -name 'agama-logs*.tar.gz' 2>/dev/null || true");
     $full_log_path =~ s/^\s+|\s+$//g;
     upload_logs($full_log_path, log_name => 'agama-logs-from-ui.tar.gz') if $full_log_path;
+
+    # agama configuration from the UI saved by default to this path
+    my $full_config_path = script_output("find /root/Downloads/ -name 'agama-config-*.json' 2>/dev/null || true");
+    $full_config_path =~ s/^\s+|\s+$//g;
+    upload_logs($full_config_path, log_name => 'agama-config-from-ui.json') if $full_config_path;
 }
 
 sub upload_browser_automation_dumps {
