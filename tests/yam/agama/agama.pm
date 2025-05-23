@@ -10,6 +10,7 @@ use strict;
 use warnings;
 use Carp qw(croak);
 use testapi qw(
+  check_var
   diag
   get_var
   get_required_var
@@ -62,7 +63,7 @@ sub run {
         my $svirt = console('svirt')->change_domain_element(os => boot => {dev => 'hd'});
     }
 
-    (is_s390x() || is_ppc64le() || is_headless_installation()) ?
+    (is_s390x() || (is_ppc64le() && !check_var("BACKEND", "qemu")) || is_headless_installation()) ?
       # reboot via console
       power_action('reboot', keepconsole => 1, first_reboot => 1) :
       # graphical reboot
