@@ -19,6 +19,17 @@ sub post_fail_hook {
 sub upload_agama_logs {
     select_console 'install-shell';
 
+    # get y2log
+    if (script_run("test -d /var/log/YaST2") == 0) {
+        script_run("tar czvf /tmp/YaST2.tar.gz /var/log/YaST2/*", {timeout => 60});
+        upload_logs("/tmp/YaST2.tar.gz", failok => 1);
+    }
+    # get web console log during manual test
+    if (script_run('ls /tmp/console-export* 1>/dev/null 2>&1') == 0) {
+        script_run('tar czvf /tmp/console-export.tar.gz /tmp/console-export*', {timeout => 60});
+        upload_logs('/tmp/console-export.tar.gz', failok => 1);
+    }
+
     if (script_run("test -d /run/agama/scripts") == 0) {
         script_run("tar czvf /tmp/agama_scripts.tar.gz /run/agama/scripts/*", {timeout => 60});
         upload_logs("/tmp/agama_scripts.tar.gz", failok => 1);
