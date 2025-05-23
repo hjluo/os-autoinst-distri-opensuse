@@ -22,6 +22,7 @@ sub is_registered_and_active {
 sub run {
     select_console 'root-console';
 
+    script_output("df -h");
     my $json = decode_json(script_output("SUSEConnect -s"));
     my %map;
     foreach my $data (@$json) {
