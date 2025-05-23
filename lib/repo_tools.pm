@@ -551,8 +551,13 @@ sub validate_repo_properties {
     }
 
     if ($args->{URI}) {
+        record_info("We got URI .....");
+        record_info("Actual URI", $actual_repo_data->{URI});
+        record_info("Expected UR", $actual_repo_data->{URI});
         assert_true($actual_repo_data->{URI} =~ /$args->{URI}/,
             "Repository $args->{Name} has wrong URI, expected: '$args->{URI}', got: '$actual_repo_data->{URI}'");
+    } else {
+        record_info("Failed to got URI from TEST_DATA");
     }
 
     if ($args->{Enabled}) {
