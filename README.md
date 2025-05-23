@@ -13,7 +13,7 @@ Status of [openSUSE Tumbleweed](https://get.opensuse.org/tumbleweed/) tests:
 contains the [test distribution](https://en.wikipedia.org/wiki/Software_distribution) of the suite and harness, executed by openQA for openSUSE and SLE
 distributions.
 
-Why the name *osado*? Two reasons:
+Why *the* name *osado*? Two reasons:
 1. It means "bold" or "daring" in Spanish and this is what this project tries
    to be :)
 2. *osado* is an acronym of **os**-**a**utoinst-**d**istri-**o**pensuse
