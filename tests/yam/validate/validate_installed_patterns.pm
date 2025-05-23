@@ -19,6 +19,9 @@ sub run {
 
     my @pattern_list = split(/,/, get_var('PATTERNS'));
 
+    my $content = script_output("cat /etc/gdm/custom.conf");
+    diag($content);
+
     zypper_call("search -t pattern");
     zypper_call("search -i -t pattern");
     foreach (@pattern_list) { zypper_call("search -i -t pattern $_"); }
