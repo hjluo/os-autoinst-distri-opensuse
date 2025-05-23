@@ -25,6 +25,8 @@ sub run {
     };
 
     select_console 'root-console';
+    script_run("zypper lr");
+    script_run("cat /etc/os-release");
     assert_script_run("echo 'url: " . get_required_var('SCC_URL') . "' > /etc/SUSEConnect");
 
     script_run("(zypper migration; echo $zypper_done) |& tee /dev/$serialdev", 0);
