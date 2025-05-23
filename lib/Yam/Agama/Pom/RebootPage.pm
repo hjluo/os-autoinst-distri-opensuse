@@ -22,7 +22,7 @@ sub new {
 
 sub expect_is_shown {
     my $self = shift;
-    my $timeout = 2400;
+    my $timeout = 600;
 
     while ($timeout > 0) {
         my $ret = check_screen($self->{tag_installation_complete}, 30);

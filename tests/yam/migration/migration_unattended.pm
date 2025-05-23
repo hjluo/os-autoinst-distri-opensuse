@@ -20,6 +20,8 @@ sub run {
 
     select_console('root-console');
 
+    record_info('content of /etc/resolv.conf', script_output('cat /etc/resolv.conf'));
+
     assert_script_run("echo 'url: " . get_var('SCC_URL') . "' > /etc/SUSEConnect");
 
     my $repo_server = get_var('REPO_MIRROR_HOST', 'download.suse.de');
