@@ -39,7 +39,39 @@ local lvm(encrypted=false, encryption='luks2') = {
     },
   ],
 };
-
+local raid(level='0') = {
+  drives: [
+    {
+      partitions: [
+        { id: 'bios_boot', size: '8 MiB', boot: true },
+        { alias: 'first-raid', id: 'raid', size: '7.81 GiB' },
+        { alias: 'second-raid', id: 'raid', size: '512 MiB' },
+      ],
+      mdRaids: [
+        {
+          level: 'raid' + level,
+          devices: ['first-raid'],
+          partitions: [
+            {
+              filesystem: {
+                path: '/',
+                type: { btrfs: { snapshots: false } },
+              },
+              boot: true,
+            },
+          ],
+        },
+        {
+          level: 'raid' + level,
+          devices: ['second-raid'],
+          partitions: [
+            { filesystem: { path: 'swap' } },
+          ],
+        },
+      ],
+    },
+  ],
+};
 local whole_disk_and_boot_unattended() = {
   drives: [
     {
@@ -72,6 +104,9 @@ local whole_disk_and_boot_unattended() = {
   lvm: lvm(false),
   lvm_encrypted: lvm(true),
   lvm_tpm_fde: lvm(true, 'tpmFde'),
+  raid0: raid('0'),
+  raid1: raid('1'),
+  raid5: raid('5'),
   root_filesystem_ext4: root_filesystem('ext4'),
   root_filesystem_xfs: root_filesystem('xfs'),
   whole_disk_and_boot_unattended: whole_disk_and_boot_unattended(),
