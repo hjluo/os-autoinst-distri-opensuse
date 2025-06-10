@@ -794,15 +794,38 @@ sub expand_agama_profile {
 
 =cut
 
+use Time::HiRes qw(sleep);
+
+sub wait_for_agama_ready {
+    my $timeout = shift || 120;
+    my $count = 0;
+
+    while ($count < $timeout) {
+        my $agama_active = script_output("systemctl is-active --quiet agama.service");
+        my $web_active = script_output("systemctl is-active --quiet agama-web-server.service");
+        my $nm_active = script_output("systemctl is-active --quiet NetworkManager.service");
+
+        if ($agama_active && $web_active && $nm_active) {  
+            # Check web server responsiveness  
+            assert_script_run("curl -s -o /dev/null http://localhost");
+            return 0;
+        }
+        sleep(1);  
+        $count++; 
+    }
+    return 1;
+}
 sub generate_json_profile {
     my ($profile) = @_;
     my $profile_name = "generated_profile.json";
     my $profile_path = get_required_var('CASEDIR') . "/data/" . $profile;
-
+    
     my @profile_options = map { "--tla-" . (/true|false/ ? "code" : "str") . " $_ " }
       split(' ', trim(get_var('AGAMA_PROFILE_OPTIONS')));
     diag "jsonnet @profile_options $profile_path";
     record_info("JSONNET Command", "jsonnet @profile_options $profile_path");
+
+    die "Agama service is not ready and no jsonnnet found" unless wait_for_agama_ready(120);
     my $profile_content = `jsonnet @profile_options $profile_path`;
     record_info("Profile", $profile_content);
 
