@@ -23,13 +23,13 @@ local resize() = {
         {
           search: '/dev/vda3',
           filesystem: { path: 'swap' },
-          size: '1 GiB'
+          size: '1 GiB',
         },
         {
           filesystem: { path: '/home' },
           encryption: {
-            luks2: { password: 'nots3cr3t' }
-          }
+            luks2: { password: 'nots3cr3t' },
+          },
         },
       ],
     },
@@ -69,6 +69,10 @@ local lvm(encrypted=false, encryption='luks2') = {
 local whole_disk_and_boot_unattended() = {
   drives: [
     {
+      search: '/dev/vdc',
+      alias: 'boot-disk',
+    },
+    {
       search: '/dev/vda',
       filesystem: {
         path: '/home',
@@ -83,10 +87,6 @@ local whole_disk_and_boot_unattended() = {
           },
         },
       ],
-    },
-    {
-      search: '/dev/vdc',
-      alias: 'boot-disk',
     },
   ],
   boot: {
