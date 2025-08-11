@@ -19,6 +19,7 @@ sub set_agama_version {
 
 sub run {
     select_console 'install-shell';
+    send_key_until_needlematch("install-shell", "ret") unless check_screen("install-shell", 10);
     set_agama_version();
 }
 
