@@ -1,7 +1,12 @@
+local stop_timeout() = {
+    'stopOnBootMenu' : true,
+};
+
+local timeout() = {
+    'timeout' : 15,
+};
+
 {
-  bootloader: {
-    stopOnBootMenu: true
-  },
   files: [{
      destination: '/usr/local/share/dummy.xml',
      url: 'dummy.xml'
@@ -21,4 +26,10 @@
     [if password then 'hashedPassword']: true,
     sshPublicKey: 'fake public key to enable sshd and open firewall',
   },
+  stop_timeout: stop_timeout(),
+  timeout: timeout(),
+  extra_kernel_params(extra_kernel_params):: {
+    extraKernelParams: extra_kernel_params
+  },
 }
+
