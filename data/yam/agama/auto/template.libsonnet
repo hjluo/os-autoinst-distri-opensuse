@@ -11,6 +11,7 @@ local security_lib = import 'lib/security.libsonnet';
 
 function(bootloader=true,
          bootloader_timeout=false,
+         bootloader_extra_kernel_params='',
          dasd=false,
          extra_repositories=false,
          files=false,
@@ -31,8 +32,12 @@ function(bootloader=true,
          ssl_certificates=false,
          storage='',
          user=true) {
-  [if bootloader then 'bootloader']: base_lib.stop_timeout(),
-  [if bootloader_timeout then 'bootloader']: base_lib.timeout(),
+   [if bootloader || bootloader_timeout !='' ||
+     bootloader_extra_kernel_params != '' then 'bootloader']: std.prune({
+     stopOnBootMenu: if bootloader then true,
+     timeout: if !bootloader && bootloader_timeout then 15,
+     extraKernelParams: if bootloader_extra_kernel_params != '' then bootloader_extra_kernel_params,
+  }),
   [if dasd == true then 'dasd']: dasd_lib.dasd(),
   [if files == true then 'files']: base_lib['files'],
   [if iscsi == true then 'iscsi']: iscsi_lib.iscsi(),

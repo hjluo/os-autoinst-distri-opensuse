@@ -19,12 +19,3 @@
     sshPublicKey: 'fake public key to enable sshd and open firewall',
   },
 }
-
-{
-  stop_timeout():: {
-    stopOnBootMenu: true,
-  },
-  timeout():: {
-    timeout: 15,
-  },
-}
