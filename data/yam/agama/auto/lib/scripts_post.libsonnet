@@ -14,5 +14,13 @@
       #!/usr/bin/env bash
       systemctl enable serial-getty@hvc1
     |||
-  }
+  },
+  set_grub_timeout: {
+  "name": "set grub timeout to -1",
+   chroot: true,
+   content: |||
+     #!/usr/bin/env bash
+     grub2-editenv - set timeout=-1
+   |||
+},
 }
