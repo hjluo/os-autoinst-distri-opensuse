@@ -240,7 +240,9 @@ see boot_grub_item()
 
 sub handle_grub_zvm {
     my ($console) = @_;
-    eval { $console->expect_3270(output_delim => 'GNU GRUB', timeout => 60); };
+    # migration to sles16 happened at revoot and need more time.
+    my $timeout = get_var('VERSION_UPGRADE_FROM') ? 600 : 60;
+    eval { $console->expect_3270(output_delim => 'GNU GRUB', timeout => $timeout); };
     if ($@) {
         diag 'Could not find GRUB screen, continuing nevertheless, trying to boot';
     }
