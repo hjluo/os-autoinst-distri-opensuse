@@ -390,7 +390,7 @@ sub unlock_if_encrypted {
             }
         }
         send_key "ret";
-        wait_still_screen 15;
+        wait_still_screen 90;
     }
 }
 
