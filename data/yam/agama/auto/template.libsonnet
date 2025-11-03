@@ -18,6 +18,7 @@ function(bootloader=true,
          files=false,
          iscsi=false,
          localization='',
+         packagehub=false,
          packages='',
          patterns='',
          patterns_to_add='',
@@ -34,6 +35,7 @@ function(bootloader=true,
          ssl_certificates=false,
          storage='',
          decrypt_password='',
+         trust_import_gpg=false,
          user=true) (
         base_lib.bootloader(bootloader, bootloader_timeout, bootloader_extra_kernel_params) +
         {
@@ -52,8 +54,9 @@ function(bootloader=true,
             onlyRequired: if software_only_required then true,
           }),
           [if product != '' then 'product']: {
-            [if registration_code_ha != '' then 'addons']: std.prune([
+            [if registration_code_ha != '' || packagehub then 'addons']: std.prune([
               if registration_code_ha != '' then addons_lib.addon_ha(registration_code_ha),
+              if packagehub then addons_lib.addon_packagehub(),
             ]),
             id: product,
             [if registration_code != '' then 'registrationCode']: registration_code,
@@ -66,7 +69,13 @@ function(bootloader=true,
             [if scripts_post_partitioning != '' then 'postPartitioning']: [ scripts_post_partitioning_lib[x] for x in std.split(scripts_post_partitioning, ',') ],
             [if scripts_pre != '' then 'pre']: [ scripts_pre_lib[x] for x in std.split(scripts_pre, ',') ],
           },
-          [if decrypt_password != '' then 'questions']: answers_lib.questions_decrypt(decrypt_password),
+          [if decrypt_password != '' || trust_import_gpg then 'questions']: { 
+            policy: 'auto',
+            answers: std.prune([  
+              if decrypt_password != '' then answers_lib.questions_decrypt(decrypt_password),  
+              if trust_import_gpg then answers_lib.questions_import_gpg(),  
+            ]),
+          },
           [if std.startsWith(storage, 'raid') then 'storage']: storage_lib[storage],
           [if storage == 'home_on_iscsi' then 'storage']: storage_lib.home_on_iscsi,
           [if storage == 'lvm' then 'storage']: storage_lib['lvm'],
