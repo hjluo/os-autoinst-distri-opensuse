@@ -5,7 +5,7 @@ description: >
 schedule:
   - yam/agama/boot_agama
   - yam/agama/agama_auto
-  - installation/grub_test
+  - yam/agama/boot_encrypted_partitions
   - installation/first_boot
   - installation/validation/ibft
   - console/validate_lvm
