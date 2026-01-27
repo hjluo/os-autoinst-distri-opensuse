@@ -17,4 +17,11 @@
       agama questions mode non-interactive
     |||
   },
+  create_iscsi_initiator: {
+    name: 'create iscsi initiator',
+    content: |||
+      #!/usr/bin/env bash
+      echo "iqn.1996-04.de.suse:01:972154f2547d" > /etc/iscsi/initiatorname.iscsi
+    |||
+  },
 }
