@@ -5,6 +5,8 @@
     content: |||
       #!/usr/bin/env bash
       echo 'PermitRootLogin yes' > /etc/ssh/sshd_config.d/root.conf
+      bootlist -m normal -o vda
+      bootlist -m normal -r vda
     |||
   },
   add_serial_console_hvc1: {
