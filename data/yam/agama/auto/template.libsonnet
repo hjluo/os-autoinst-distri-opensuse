@@ -36,6 +36,7 @@ function(access_ssh_enabled=false,
          scripts_pre='',
          scripts_post_partitioning='',
          scripts_post='',
+         skip_decrypt=false,
          software_only_required=false,
           // Only for 16.0 needed
          ssh_public_key=false,
@@ -78,12 +79,13 @@ function(access_ssh_enabled=false,
             [if scripts_post_partitioning != '' then 'postPartitioning']: [ scripts_post_partitioning_lib[x] for x in std.split(scripts_post_partitioning, ',') ],
             [if scripts_pre != '' then 'pre']: [ scripts_pre_lib[x] for x in std.split(scripts_pre, ',') ],
           },
-          [if decrypt_password != '' || registration_packagehub || multipath_activate then 'questions']: {
+          [if decrypt_password != '' || registration_packagehub || multipath_activate || skip_decrypt then 'questions']: {
             [if questions_policy_auto then 'policy']: 'auto',
             answers: std.prune([
               if decrypt_password != '' then answers_lib.questions_decrypt(decrypt_password),
               if registration_packagehub then answers_lib.questions_import_gpg(),
               if multipath_activate then answers_lib.questions_activate_multipath(),
+              if skip_decrypt then answers_lib.questions_skip_decrypt(),
             ]),
           },
           [if storage != '' then 'storage']: storage_lib[storage],

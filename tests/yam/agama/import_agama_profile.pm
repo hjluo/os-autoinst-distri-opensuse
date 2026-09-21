@@ -5,7 +5,7 @@
 # Maintainer: QE Installation and Migration (QE Iam) <none@suse.de>
 
 use Mojo::Base 'Yam::Agama::patch_agama_base';
-use testapi qw(assert_script_run data_url get_required_var set_var get_var check_var select_console script_run record_soft_failure);
+use testapi;
 use autoyast qw(expand_agama_profile generate_json_profile);
 use version_utils qw(is_sle);
 
@@ -17,7 +17,13 @@ sub run {
     set_var('AGAMA_PROFILE', $profile_url);
 
     select_console 'install-shell';
-    assert_script_run("agama config load $profile_url", timeout => 300) if (!check_var('AGAMA_PROFILE_LOAD', '0'));
+    script_run("agama config load $profile_url", 0);
+    sleep 10;
+    type_string("\t", lf => 0);
+    sleep 5;
+    type_string("\n", lf => 0);
+    wait_serial("OA:DONE-.*-0-OA", timeout => 300) || die "Agama config load failed";
+    record_info("Agama configure", script_output('agama config show'));
 }
 
 1;
